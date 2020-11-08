@@ -4,12 +4,20 @@ import {Card, CardBody, CardImg, CardText, CardTitle} from "reactstrap";
 
 class DishDetail extends Component {
 
+    formatDate(dateString) {
+        return new Intl.DateTimeFormat(
+                'en-US',
+                { year: 'numeric', month: 'short', day: '2-digit'}
+            ).format(new Date(Date.parse(dateString))
+        )
+    }
+
     renderComments(comments) {
         return comments.map((comment) => {
             return (
                 <li key={comment.id}>
                     <div>{comment.comment}</div>
-                    <div>-- {comment.author}, {new Date(comment.date).toDateString()}</div>
+                    <div>-- {comment.author}, {this.formatDate(comment.date)}</div>
                 </li>
             )
         })
