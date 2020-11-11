@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
-import {DISHES} from "./shared/dishes";
 import MainComponent from './components/MainComponent';
 
 class App extends Component {
