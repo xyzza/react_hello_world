@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col} from "reactstrap";
+import {Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Label, Input, Col, FormFeedback} from "reactstrap";
 import {Link} from "react-router-dom";
 
 
@@ -13,10 +13,17 @@ export default class Contact extends Component {
             email: '',
             agree: false,
             contactType: 'Tel.',
-            message: ''
+            message: '',
+            touched: {
+                firstName: false,
+                lastName: false,
+                telnum: false,
+                email: false
+            }
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
     handleInputChange(event) {
         const target = event.target;
@@ -31,8 +38,49 @@ export default class Contact extends Component {
         alert("Current state is: " + JSON.stringify(this.state));
         event.preventDefault();
     }
+    handleBlur = (field) => (evt) => {
+        this.setState({
+            touched: { ...this.state.touched, [field]: true }
+        });
+    };
+
+    validate(firstName, lastName, telnum, email) {
+        const errors = {
+            firstName: '',
+            lastName: '',
+            telnum: '',
+            email: ''
+        };
+
+        if (this.state.touched.firstName && firstName.length < 3)
+            errors.firstName = "First name should be >=3 characters";
+        else if (this.state.touched.firstName && firstName.length > 10)
+            errors.firstName = "First name should be <10 characters";
+
+        if (this.state.touched.lastName && lastName.length < 3)
+            errors.lastName = "Last name should be >=3 characters";
+        else if (this.state.touched.lastName && lastName.length > 10)
+            errors.lastName = "Last name should be <10 characters";
+
+        const reg = /^\d+$/;
+        if (this.state.touched.telnum && !reg.test(telnum))
+            errors.telnum = 'Tel. number should contain only numbers';
+
+        if (this.state.touched.email && email.split('').filter(x => x === '@').length !==1)
+            errors.email = 'Email should contain a @';
+
+        return errors
+    }
 
     render(){
+
+        const errors = this.validate(
+            this.state.firstName,
+            this.state.lastName,
+            this.state.telnum,
+            this.state.email
+        );
+
         return(
             <div className="container">
                 <div className="row">
@@ -87,9 +135,13 @@ export default class Contact extends Component {
                                         id="firstName"
                                         name="firstName"
                                         placeholder="First Name"
+                                        valid={errors.firstName === ''}
+                                        invalid={errors.firstName !== ''}
                                         value={this.state.firstName}
                                         onChange={this.handleInputChange}
+                                        onBlur={this.handleBlur('firstName')}
                                     />
+                                    <FormFeedback>{errors.firstName}</FormFeedback>
                                 </Col>
                                 <Label htmlFor="lastName" md={2}>Last name</Label>
                                 <Col md={10}>
@@ -98,9 +150,13 @@ export default class Contact extends Component {
                                         id="lastName"
                                         name="lastName"
                                         placeholder="Last Name"
+                                        valid={errors.lastName === ''}
+                                        invalid={errors.lastName !== ''}
                                         value={this.state.lastName}
                                         onChange={this.handleInputChange}
+                                        onBlur={this.handleBlur('lastName')}
                                     />
+                                    <FormFeedback>{errors.lastName}</FormFeedback>
                                 </Col>
                                 <Label htmlFor="telnum" md={2}>Contact tel.</Label>
                                 <Col md={10}>
@@ -109,9 +165,13 @@ export default class Contact extends Component {
                                         id="telnum"
                                         name="telnum"
                                         placeholder="Tel num."
+                                        valid={errors.telnum === ''}
+                                        invalid={errors.telnum !== ''}
                                         value={this.state.telnum}
                                         onChange={this.handleInputChange}
+                                        onBlur={this.handleBlur('telnum')}
                                     />
+                                    <FormFeedback>{errors.telnum}</FormFeedback>
                                 </Col>
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>
@@ -120,9 +180,13 @@ export default class Contact extends Component {
                                         id="exmail"
                                         name="email"
                                         placeholder="Email"
+                                        valid={errors.email === ''}
+                                        invalid={errors.email !== ''}
                                         value={this.state.email}
                                         onChange={this.handleInputChange}
+                                        onBlur={this.handleBlur('email')}
                                     />
+                                    <FormFeedback>{errors.email}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
