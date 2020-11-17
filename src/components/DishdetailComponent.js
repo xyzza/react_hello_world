@@ -118,25 +118,6 @@ class CommentForm extends Component {
                                 </Col>
                             </Row>
                         </LocalForm>
-                        {/*<Form onSubmit={this.handleCommentSubmit}>*/}
-                            {/*<FormGroup>*/}
-                                {/*<Label htmlFor="userName">Username</Label>*/}
-                                {/*<Input innerRef={(input) => this.userName = input}*/}
-                                    {/*type="text" id="userName" name="userName"/>*/}
-                            {/*</FormGroup>*/}
-                            {/*<FormGroup>*/}
-                                {/*<Label htmlFor="password">Password</Label>*/}
-                                {/*<Input innerRef={(input) => this.password = input}*/}
-                                    {/*type="password" id="password" name="password"/>*/}
-                            {/*</FormGroup>*/}
-                            {/*<FormGroup check>*/}
-                                {/*<Label check>*/}
-                                    {/*<Input type="checkbox" name="remember"/>*/}
-                                    {/*Remember me*/}
-                                {/*</Label>*/}
-                            {/*</FormGroup>*/}
-                            {/*<Button type="submit" valye="submit" className="primary">Login</Button>*/}
-                        {/*</Form>*/}
                     </ModalBody>
                 </Modal>
 
