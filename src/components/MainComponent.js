@@ -8,6 +8,7 @@ import Contact from './ContactComponent';
 import AboutComponent from './AboutComponent'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
+import {addComment} from "../redux/ActionCreators";
 
 
 const mapStateToProps = state => {
@@ -18,6 +19,11 @@ const mapStateToProps = state => {
         promotions: state.promotions,
     }
 };
+
+
+const mapDispatchToProps = (dispatch) => ({
+    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+});
 
 
 function MainComponent(props) {
@@ -38,6 +44,7 @@ function MainComponent(props) {
             <DishDetail
                 dish={props.dishes.filter((dish) => dish.id === dishId)[0]}
                 comments={props.comments.filter((comment) => comment.dishId === dishId)}
+                addComment={props.addComment}
             />
         );
     };
@@ -58,4 +65,4 @@ function MainComponent(props) {
     )
 }
 
-export default withRouter(connect(mapStateToProps)(MainComponent));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainComponent));

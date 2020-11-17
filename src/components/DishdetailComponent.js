@@ -34,9 +34,8 @@ class CommentForm extends Component {
     }
 
     handleCommentSubmit(values) {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
         this.toggleModalCommentForm();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     };
 
     render() {
@@ -143,7 +142,7 @@ function RenderDish({dish}) {
 }
 
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
 
     const formatDate = (dateString) => {
         return new Intl.DateTimeFormat(
@@ -168,15 +167,15 @@ function RenderComments({comments}) {
             <ul className="list-unstyled">
                 {commentsList}
             </ul>
-            <CommentForm/>
+            <CommentForm dishId={dishId} addComment={addComment}/>
         </div>
     )
 }
 
 
-export default function DishDetail({dish, comments}) {
+export default function DishDetail({dish, comments, addComment}) {
     const dishDetail = (dish!= null) ? (<RenderDish dish={dish}/>): null;
-    const dishDetailComments = (dish!= null && comments != null) ? (<RenderComments comments={comments}/>): null;
+    const dishDetailComments = (dish!= null && comments != null) ? (<RenderComments comments={comments} addComment={addComment} dishId={dish.id}/>): null;
     return (
         <div className="container">
             <div className="row">
