@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import {Link} from 'react-router-dom';
 import {Control, LocalForm, Errors} from 'react-redux-form';
+import {Loading} from './LoadingComponent'
 
 //TODO: move to shared file to avoid copy-paste on ContactComponent.js
 const required = (val) => val && val.length;
@@ -173,7 +174,25 @@ function RenderComments({comments, addComment, dishId}) {
 }
 
 
-export default function DishDetail({dish, comments, addComment}) {
+export default function DishDetail({dish, isLoading, errMess, comments, addComment}) {
+    if (isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading/>
+                </div>
+            </div>
+        );
+    }
+    else if (errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{errMess}</h4>
+                </div>
+            </div>
+        );
+    }
     const dishDetail = (dish!= null) ? (<RenderDish dish={dish}/>): null;
     const dishDetailComments = (dish!= null && comments != null) ? (<RenderComments comments={comments} addComment={addComment} dishId={dish.id}/>): null;
     return (
