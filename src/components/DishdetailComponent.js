@@ -12,6 +12,7 @@ import {
 import {Link} from 'react-router-dom';
 import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent'
+import {baseUrl} from "../shared/baseUrl";
 
 //TODO: move to shared file to avoid copy-paste on ContactComponent.js
 const required = (val) => val && val.length;
@@ -36,7 +37,7 @@ class CommentForm extends Component {
 
     handleCommentSubmit(values) {
         this.toggleModalCommentForm();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     };
 
     render() {
@@ -132,7 +133,7 @@ function RenderDish({dish}) {
     return(
         <div className="col-sm-12 col-sm-12 col-md-5 col-lg-5 m-1">
             <Card>
-            <CardImg width="100%" src={dish.image} alt={dish.name}/>
+            <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name}/>
             <CardBody>
                 <CardTitle style={{fontWeight: "bold"}}>{dish.name}</CardTitle>
                 <CardText>{dish.description}</CardText>
@@ -143,7 +144,7 @@ function RenderDish({dish}) {
 }
 
 
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
 
     const formatDate = (dateString) => {
         return new Intl.DateTimeFormat(
@@ -168,13 +169,13 @@ function RenderComments({comments, addComment, dishId}) {
             <ul className="list-unstyled">
                 {commentsList}
             </ul>
-            <CommentForm dishId={dishId} addComment={addComment}/>
+            <CommentForm dishId={dishId} postComment={postComment}/>
         </div>
     )
 }
 
 
-export default function DishDetail({dish, isLoading, errMess, comments, addComment}) {
+export default function DishDetail({dish, isLoading, errMess, comments, postComment}) {
     if (isLoading) {
         return (
             <div className="container">
@@ -194,7 +195,7 @@ export default function DishDetail({dish, isLoading, errMess, comments, addComme
         );
     }
     const dishDetail = (dish!= null) ? (<RenderDish dish={dish}/>): null;
-    const dishDetailComments = (dish!= null && comments != null) ? (<RenderComments comments={comments} addComment={addComment} dishId={dish.id}/>): null;
+    const dishDetailComments = (dish!= null && comments != null) ? (<RenderComments comments={comments} postComment={postComment} dishId={dish.id}/>): null;
     return (
         <div className="container">
             <div className="row">
