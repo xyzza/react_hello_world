@@ -14,7 +14,7 @@ export default function AboutComponent(props) {
     function RenderLeader({leader}) {
         return (
             <div key={leader.id} className="col-12 mt-5">
-                <Media tag="li">
+                <Media>
                   <Media left middle>
                       <Media object src={baseUrl + leader.image} alt={leader.name} />
                   </Media>
@@ -24,7 +24,7 @@ export default function AboutComponent(props) {
                     <p>{leader.description}</p>
                   </Media>
                 </Media>
-              </div>
+            </div>
         );
     }
 

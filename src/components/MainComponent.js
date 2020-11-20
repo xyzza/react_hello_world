@@ -10,6 +10,7 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {postComment, fetchDishes, fetchPromos, fetchComments} from "../redux/ActionCreators";
 import {actions} from 'react-redux-form';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 
 const mapStateToProps = state => {
     return {
@@ -37,7 +38,8 @@ function MainComponent({
         fetchDishes,
         resetFeedbackForm,
         fetchComments,
-        fetchPromos
+        fetchPromos,
+        location,
     }
     ) {
     //instead of componentDidMount class method I use Hook 'useEffect'
@@ -81,14 +83,18 @@ function MainComponent({
     return (
         <div>
             <HeaderComponent/>
-            <Switch>
-                <Route path="/home" component={HomePage}/>
-                <Route exact path="/menu" component={() => <Menu dishes={dishes}/>}/>
-                <Route path="/menu/:dishId" component={DishWithId}/>
-                <Route exact path="/aboutus" component={() => <AboutComponent leaders={leaders}/>}/>
-                <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={resetFeedbackForm}/>}/>
-                <Redirect to="/home"/>
-            </Switch>
+            <TransitionGroup>
+                <CSSTransition key={location.key} classNames="page" timeout={300}>
+                    <Switch location={location}>
+                        <Route path="/home" component={HomePage}/>
+                        <Route exact path="/menu" component={() => <Menu dishes={dishes}/>}/>
+                        <Route path="/menu/:dishId" component={DishWithId}/>
+                        <Route exact path="/aboutus" component={() => <AboutComponent leaders={leaders}/>}/>
+                        <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={resetFeedbackForm}/>}/>
+                        <Redirect to="/home"/>
+                    </Switch>
+                </CSSTransition>
+            </TransitionGroup>
             <FooterComponent/>
         </div>
     )
