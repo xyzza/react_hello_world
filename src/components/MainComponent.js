@@ -8,7 +8,7 @@ import Contact from './ContactComponent';
 import AboutComponent from './AboutComponent'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
-import {postComment, fetchDishes, fetchPromos, fetchComments} from "../redux/ActionCreators";
+import {postComment, fetchDishes, fetchPromos, fetchComments, fetchLeaders} from "../redux/ActionCreators";
 import {actions} from 'react-redux-form';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 
@@ -26,7 +26,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchDishes: () => { dispatch(fetchDishes())},
     resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
     fetchComments: () => dispatch(fetchComments()),
-    fetchPromos: () => dispatch(fetchPromos())
+    fetchPromos: () => dispatch(fetchPromos()),
+    fetchLeaders: () => dispatch(fetchLeaders())
 });
 
 function MainComponent({
@@ -39,6 +40,7 @@ function MainComponent({
         resetFeedbackForm,
         fetchComments,
         fetchPromos,
+        fetchLeaders,
         location,
     }
     ) {
@@ -47,7 +49,8 @@ function MainComponent({
         fetchDishes();
         fetchComments();
         fetchPromos();
-    }, [fetchDishes, fetchComments, fetchPromos]); //it is crucial to pass
+        fetchLeaders();
+    }, [fetchDishes, fetchComments, fetchPromos, fetchLeaders]); //it is crucial to pass
     // a dependency as a second arg,
     // to use effect only once, because fetchDishes & etc doesn't change,
     // but it is a hack
@@ -61,7 +64,9 @@ function MainComponent({
                 promotion={promotions.promotions.filter((promo) => promo.featured)[0]}
                 promosLoading={promotions.isLoading}
                 promosErrMess={promotions.errMess}
-                leader={leaders.filter((leader) => leader.featured)[0]}
+                leader={leaders.leaders.filter((leader) => leader.featured)[0]}
+                leadersLoading={leaders.isLoading}
+                leadersErrMess={leaders.errMess}
             />
         );
     };

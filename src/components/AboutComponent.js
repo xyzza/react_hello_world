@@ -2,10 +2,11 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import {baseUrl} from "../shared/baseUrl";
+import {Loading} from "./LoadingComponent";
 
 export default function AboutComponent(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
             <RenderLeader leader={leader}/>
         );
@@ -27,6 +28,36 @@ export default function AboutComponent(props) {
             </div>
         );
     }
+
+    const CorporateLeadership = () => {
+        if (props.leaders.isLoading) {
+            return (
+                <div className="row row-content">
+                    <Loading/>
+                </div>
+            );
+        }
+        else if (props.leaders.errMess) {
+            return (
+                <div className="row row-content">
+                    <h4>{props.leaders.errMess}</h4>
+                </div>
+            );
+        }
+        else
+            return (
+                <div className="row row-content">
+                    <div className="col-12">
+                        <h2>Corporate Leadership</h2>
+                    </div>
+                    <div className="col-12">
+                        <Media list>
+                            {leaders}
+                        </Media>
+                    </div>
+                </div>
+            )
+    };
 
     return(
         <div className="container">
@@ -78,16 +109,7 @@ export default function AboutComponent(props) {
                     </Card>
                 </div>
             </div>
-            <div className="row row-content">
-                <div className="col-12">
-                    <h2>Corporate Leadership</h2>
-                </div>
-                <div className="col-12">
-                    <Media list>
-                        {leaders}
-                    </Media>
-                </div>
-            </div>
+            <CorporateLeadership/>
         </div>
     );
 }
