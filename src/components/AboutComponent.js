@@ -3,12 +3,15 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'r
 import { Link } from 'react-router-dom';
 import {baseUrl} from "../shared/baseUrl";
 import {Loading} from "./LoadingComponent";
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 
 export default function AboutComponent(props) {
 
     const leaders = props.leaders.leaders.map((leader) => {
         return (
-            <RenderLeader leader={leader}/>
+            <CSSTransition key={leader.id} classNames="leader" timeout={500}>
+                <RenderLeader leader={leader}/>
+            </CSSTransition>
         );
     });
 
@@ -52,7 +55,9 @@ export default function AboutComponent(props) {
                     </div>
                     <div className="col-12">
                         <Media list>
-                            {leaders}
+                            <TransitionGroup>
+                                {leaders}
+                            </TransitionGroup>
                         </Media>
                     </div>
                 </div>

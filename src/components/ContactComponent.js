@@ -9,10 +9,19 @@ const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-export default function Contact({resetFeedbackForm}) {
+export default function Contact({resetFeedbackForm, postFeedback}) {
     const handleSubmit = (values) =>  {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
+
+        const newFeedback = {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            telnum: values.telnum,
+            email: values.email,
+            agree: values.agree,
+            contType: values.contType,
+            messag: values.message
+        };
+        postFeedback(newFeedback);
         resetFeedbackForm();
     };
 

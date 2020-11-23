@@ -185,3 +185,35 @@ export const addLeaders = (promos) => ({
     type: ActionTypes.ADD_LEADERS,
     payload: promos
 });
+
+export const postFeedback = (feedback) => (dispatch) => {
+    //TODO: dispatch can be used to add feedback store later, but now it's useless
+    return fetch(baseUrl + 'feedback', {
+        method: 'POST',
+        body: JSON.stringify(feedback),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            throw new Error(error.message);
+        })
+        .then(response => response.json())
+        .then(response => alert(JSON.stringify(response)))
+        .catch(error => {
+            console.log('Post feedback', error.message);
+            alert('Your feedback failed to be posted')
+        })
+
+};
